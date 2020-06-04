@@ -2,7 +2,7 @@ package com.techelevator;
 
 import java.math.BigDecimal;
 
-public class Chips implements Vendable {
+public class Chip implements Vendable {
 
 	private String name;
 	private BigDecimal price;
@@ -11,7 +11,7 @@ public class Chips implements Vendable {
 	private int stock;
 	private boolean soldOut;
 	
-	public Chips(String name, BigDecimal price, String slot) {
+	public Chip(String name, BigDecimal price, String slot) {
 		this.name = name;
 		this.price = price;
 		this.slot = slot;
