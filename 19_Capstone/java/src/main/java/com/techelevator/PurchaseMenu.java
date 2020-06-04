@@ -8,15 +8,21 @@ import com.techelevator.view.Menu;
 
 public class PurchaseMenu extends Menu {
 	
-	private BigDecimal currentBalance;
-
-	public PurchaseMenu(InputStream input, OutputStream output, BigDecimal currentBalance) {
+	
+	public PurchaseMenu(InputStream input, OutputStream output) {
 		super(input, output);
-		this.currentBalance = currentBalance;
 	}
 	
-	@Override
-	protected void displayMenuOptions(Object[] options) {
+	public Object getChoiceFromOptions(Object[] options, BigDecimal currentBalance) {
+		Object choice = null;
+		while (choice == null) {
+			displayMenuOptions(options, currentBalance);
+			choice = super.getChoiceFromUserInput(options);
+		}
+		return choice;
+	}
+	
+	protected void displayMenuOptions(Object[] options, BigDecimal currentBalance) {
 		super.out.println();
 		for (int i = 0; i < options.length; i++) {
 			int optionNum = i + 1;

@@ -31,7 +31,7 @@ public class VendingMachineCLI {
 	private static final String[] FEED_MONEY_OPTIONS = { FEED_MONEY_OPTION_ONE_DOLLAR, FEED_MONEY_OPTION_TWO_DOLLARS,
 			FEED_MONEY_OPTION_FIVE_DOLLARS, FEED_MONEY_OPTION_TEN_DOLLARS, FEED_MONEY_OPTION_RETURN };
 
-	private BigDecimal currentBalance = BigDecimal.ZERO;
+	private BigDecimal currentBalance;
 
 	private List<Vendable> itemList = new ArrayList<>();
 
@@ -46,6 +46,8 @@ public class VendingMachineCLI {
 			System.out.println("Error: Can't find inventory file");
 			System.exit(1);
 		}
+		currentBalance = BigDecimal.ZERO;
+		currentBalance = currentBalance.setScale(2);
 	}
 
 	public void run() {
@@ -111,9 +113,9 @@ public class VendingMachineCLI {
 	}
 
 	public void purchase() {
-		PurchaseMenu purchaseMenu = new PurchaseMenu(System.in, System.out, currentBalance);
+		PurchaseMenu purchaseMenu = new PurchaseMenu(System.in, System.out);
 		while (true) { // PURCHASE MENU
-			String choice = (String) purchaseMenu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+			String choice = (String) purchaseMenu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS, currentBalance);
 
 			if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
 				feedMoney();
@@ -130,7 +132,7 @@ public class VendingMachineCLI {
 		FeedMoneyMenu feedMoneyMenu = new FeedMoneyMenu(System.in, System.out, currentBalance);
 		boolean loop = true;
 		while (loop) { // FEED MONEY MENU
-			String choice = (String) feedMoneyMenu.getChoiceFromOptions(FEED_MONEY_OPTIONS);
+			String choice = (String) feedMoneyMenu.getChoiceFromOptions(FEED_MONEY_OPTIONS, currentBalance);
 			
 			if (choice.equals(FEED_MONEY_OPTION_ONE_DOLLAR)) {
 				currentBalance = currentBalance.add(BigDecimal.valueOf(1.00));
