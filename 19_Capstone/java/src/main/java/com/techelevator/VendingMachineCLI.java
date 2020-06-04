@@ -37,6 +37,7 @@ public class VendingMachineCLI {
 			
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
+				displayMenu();
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
@@ -76,6 +77,29 @@ public class VendingMachineCLI {
 		}
 		inventory.close();
 	}
+	
+	
+	
+	public void displayMenu() {
+		System.out.println(" _____________________________________________");
+		System.out.println("|---------------------------------------------|");
+		System.out.println("|       Umbrella Corp Vending Machine         |");
+		System.out.println("|---------------------------------------------|");
+		System.out.println("|              Items Available                |");
+		System.out.println("|---------------------------------------------|");
+		System.out.println("|  Slot  |  Name  |  Price  |  # Available    |");
+		System.out.println("|---------------------------------------------|");
+		for (Vendable item: itemList) {
+			System.out.println("|   " + item.getSlot() + "   | " + item.getName() + "   |   $" + item.getPrice() + "   |   Qty: " + item.getStock() + "  |");
+		}
+		System.out.println("|---------------------------------------------|");
+		System.out.println("|_____________________________________________|");
+		
+		
+	}
+	
+	
+	
 	
 //	public void testInventory(){
 //		for (Vendable item: itemList) {
