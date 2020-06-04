@@ -15,6 +15,14 @@ public class VendingMachineCLI {
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT };
+	
+	private static final String PURCHASE_MENU_OPTION_FEED_MONEY = "Feed money";
+	private static final String PURCHASE_MENU_OPTION_SELECT_PRODUCT = "Select Product";
+	private static final String PURCHASE_MENU_FINISH_TRANSACTION = "Finish Transaction";
+	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_FINISH_TRANSACTION };
+	
+	private BigDecimal currentBalance = BigDecimal.ZERO.movePointRight(2);
+	
 	private List<Vendable> itemList = new ArrayList<>();
 	
 	
@@ -40,6 +48,7 @@ public class VendingMachineCLI {
 				displayMenu();
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
+				purchase();
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
 				System.out.println("Thank you for shopping!");
 				System.exit(1);
@@ -78,8 +87,6 @@ public class VendingMachineCLI {
 		inventory.close();
 	}
 	
-	
-	
 	public void displayMenu() {
 		System.out.println(" _____________________________________________");
 		System.out.println("|---------------------------------------------|");
@@ -94,17 +101,26 @@ public class VendingMachineCLI {
 		}
 		System.out.println("|---------------------------------------------|");
 		System.out.println("|_____________________________________________|");
-		
+	}
+	
+	public void purchase() {
+		PurchaseMenu purchaseMenu = new PurchaseMenu(System.in, System.out, currentBalance); 
+		while (true) {		//PURCHASE MENU
+			String choice = (String) purchaseMenu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
+			
+			if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
+				// run feed money
+				displayMenu();
+			} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
+				// do select
+				purchase();
+			} else if (choice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
+				//Finish transaction
+				System.exit(1);
+			}
+		}
 		
 	}
 	
-	
-	
-	
-//	public void testInventory(){
-//		for (Vendable item: itemList) {
-//			System.out.println(item.getSlot() + " " + item.getName() + " " + item.getPrice() + " " + item.getSound() + " " + item.getStock());
-//		}
-//	}
 	
 }
