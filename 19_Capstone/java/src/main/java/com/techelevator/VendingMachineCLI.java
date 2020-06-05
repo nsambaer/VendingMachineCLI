@@ -121,29 +121,35 @@ public class VendingMachineCLI {
 	}
 
 	private void displayMenu() {
-		System.out.println(" _____________________________________________");
-		System.out.println("|---------------------------------------------|");
-		System.out.println("|       Umbrella Corp Vending Machine         |");
-		System.out.println("|---------------------------------------------|");
-		System.out.println("|              Items Available                |");
-		System.out.println("|---------------------------------------------|");
-		System.out.println("|  Slot  |  Name  |  Price  |  # Available    |");
-		System.out.println("|---------------------------------------------|");
+		System.out.println(" ___________________________________________________");
+		System.out.println("|---------------------------------------------------|");
+		System.out.println("|           Umbrella Corp Vending Machine           |");
+		System.out.println("|---------------------------------------------------|");
+		System.out.println("|                  Items Available                  |");
+		System.out.println("|---------------------------------------------------|");
+		System.out.println("| Slot |        Name        | Price |  # Available  |");
+		System.out.println("|---------------------------------------------------|");
 	
-//		for (Vendable item : itemList) {
-//			String nameWithSpacing = item.getName();
-//			for (int i = 0; i <= (20 - nameWithSpacing.length()); i++) {
-//				nameWithSpacing += " ";
-//			}
-//			System.out.println("|   " + item.getSlot() + "   | " + nameWithSpacing + "|"); // + item.getPrice() + "   |   Qty: " + item.getStock() + "  |");
-//		}
-		
 		for (Vendable item : itemList) {
-			System.out.println("|   " + item.getSlot() + "   | " + item.getName() + "   |   $" + item.getPrice()
-					+ "   |   Qty: " + item.getStock() + "  |");
+			String nameWithSpacing = item.getName();
+			for (int i = 0; i <= (18 - item.getName().length()); i++) {
+				nameWithSpacing += " ";
+			}
+			String stock;
+			if (!item.isSoldOut()) {
+				stock = item.getStock() + "       ";
+			} else {
+				stock = item.getStock();
+			}
+			System.out.println("|  " + item.getSlot() + "  | " + nameWithSpacing + "| $" + item.getPrice() + " | Qty: " + stock + " |");				
 		}
-		System.out.println("|---------------------------------------------|");
-		System.out.println("|_____________________________________________|");
+		
+//		for (Vendable item : itemList) {
+//			System.out.println("|   " + item.getSlot() + "   | " + item.getName() + "   |   $" + item.getPrice()
+//					+ "   |   Qty: " + item.getStock() + "  |");
+//		}
+		System.out.println("|---------------------------------------------------|");
+		System.out.println("|___________________________________________________|");
 	}
 
 	private void purchase() {

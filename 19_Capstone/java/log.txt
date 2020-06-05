@@ -25,3 +25,16 @@
 2020-06-05 14:14:45.487 Potato Crisps A1 $10.00 $6.95
 2020-06-05 14:14:50.616 Cloud Popcorn A4 $6.95 $3.30
 2020-06-05 14:14:55.375 GIVE CHANGE: $3.30 $0.00
+2020-06-05 14:17:04.407 Opening Log Session
+2020-06-05 14:18:19.239 Opening Log Session
+2020-06-05 14:21:31.804 Opening Log Session
+2020-06-05 14:22:32.505 Opening Log Session
+2020-06-05 14:24:01.051 Opening Log Session
+2020-06-05 14:29:30.871 Opening Log Session
+2020-06-05 14:29:45.627 Opening Log Session
+2020-06-05 14:31:15.771 Opening Log Session
+2020-06-05 14:32:03.529 Opening Log Session
+2020-06-05 14:32:23.118 Opening Log Session
+2020-06-05 14:33:38.877 Opening Log Session
+2020-06-05 14:34:07.397 Opening Log Session
+2020-06-05 14:34:54.313 Opening Log Session
