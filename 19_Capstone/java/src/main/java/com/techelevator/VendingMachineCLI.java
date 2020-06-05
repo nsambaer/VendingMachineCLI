@@ -51,17 +51,8 @@ public class VendingMachineCLI {
 		}
 		currentBalance = BigDecimal.ZERO;
 		currentBalance = currentBalance.setScale(2);
-		try (Logger log = new Logger("log.txt");){
-			
-			
-			log.Write(LocalDate.now() + " " + LocalTime.now() + " Opening Log Session");
-		} 
-		catch (IOException ex) {
-			System.out.println("IO Exception at:" + ex.getMessage());
-		} 
-		catch (Exception ex) {
-			System.out.println("General Exception at:" + ex.getMessage());
-		}
+		
+		vmLogger(LocalDate.now() + " " + LocalTime.now() + " Opening Log Session");
 	}
 
 	public void run() {
@@ -74,18 +65,8 @@ public class VendingMachineCLI {
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
 				purchase();
-			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
-				try (Logger log = new Logger("log.txt");){
-					
-					
-					log.Write(LocalDate.now() + " " + LocalTime.now() + " Closing Log Session\n");
-				} 
-				catch (IOException ex) {
-					System.out.println("IO Exception at:" + ex.getMessage());
-				} 
-				catch (Exception ex) {
-					System.out.println("General Exception at:" + ex.getMessage());
-				}
+			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {			
+				vmLogger(LocalDate.now() + " " + LocalTime.now() + " Closing Log Session\n");
 				System.out.println("Thank you for shopping!");
 				System.exit(1);
 			}
@@ -174,6 +155,18 @@ public class VendingMachineCLI {
 		}
 	}
 
+	private void vmLogger(String logMessage) {
+		try (Logger log = new Logger("log.txt");){
+			log.Write(logMessage);
+		} 
+		catch (IOException ex) {
+			System.out.println("IO Exception at:" + ex.getMessage());
+		} 
+		catch (Exception ex) {
+			System.out.println("General Exception at:" + ex.getMessage());
+		}		
+	}
+	
 	private void feedMoney() {
 		FeedMoneyMenu feedMoneyMenu = new FeedMoneyMenu(System.in, System.out);
 		boolean loop = true;
@@ -198,16 +191,7 @@ public class VendingMachineCLI {
 				break;
 			}
 			
-			try (Logger log = new Logger("log.txt");){
-				log.Write(LocalDate.now() + " " + LocalTime.now() + " FEED MONEY: $" + add + " $" + currentBalance);
-			} 
-			catch (IOException ex) {
-				System.out.println("IO Exception at:" + ex.getMessage());
-			} 
-			catch (Exception ex) {
-				System.out.println("General Exception at:" + ex.getMessage());
-			}
-
+			vmLogger(LocalDate.now() + " " + LocalTime.now() + " FEED MONEY: $" + add + " $" + currentBalance);
 		}
 	}
 	
@@ -229,16 +213,9 @@ public class VendingMachineCLI {
 				} else if (currentBalance.compareTo(itemList.get(i).getPrice()) < 0) {
 					System.out.println("Not enough balance.  Please feed me more money");
 				} else {
+					vmLogger(LocalDate.now() + " " + LocalTime.now() + " " + itemList.get(i).getName() + " " + itemList.get(i).getSlot() + " $" + currentBalance + " $" +currentBalance.subtract(itemList.get(i).getPrice()));
+					} 
 					
-					try (Logger log = new Logger("log.txt");){
-						log.Write(LocalDate.now() + " " + LocalTime.now() + " " + itemList.get(i).getName() + " " + itemList.get(i).getSlot() + " $" + currentBalance + " $" +currentBalance.subtract(itemList.get(i).getPrice()));
-					} 
-					catch (IOException ex) {
-						System.out.println("IO Exception at:" + ex.getMessage());
-					} 
-					catch (Exception ex) {
-						System.out.println("General Exception at:" + ex.getMessage());
-					}
 					currentBalance = currentBalance.subtract(itemList.get(i).getPrice());
 					itemList.get(i).buy();					
 					
@@ -250,18 +227,9 @@ public class VendingMachineCLI {
 				}
 			}
 		}
-	}
 	
 	private void finishTransaction() {
-		try (Logger log = new Logger("log.txt");){			
-			log.Write(LocalDate.now() + " " + LocalTime.now() + " GIVE CHANGE: $" + currentBalance + " $0.00");
-		} 
-		catch (IOException ex) {
-			System.out.println("IO Exception at:" + ex.getMessage());
-		} 
-		catch (Exception ex) {
-			System.out.println("General Exception at:" + ex.getMessage());
-		}
+		vmLogger(LocalDate.now() + " " + LocalTime.now() + " GIVE CHANGE: $" + currentBalance + " $0.00");
 		System.out.print("Your change is " + currentBalance + ", given as: ");
 		
 		int quarters = currentBalance.divide(BigDecimal.valueOf(0.25)).intValue();
