@@ -9,7 +9,7 @@ public class VendingMachineCLITest {
 		VendingMachineCLI testList = new VendingMachineCLI(testMenu);
 		
 //		testList.displayMenu();
-		testList.selectProduct();
+//		testList.selectProduct();
 //		testList.testInventory();
 		
 	}

@@ -2,7 +2,10 @@ package com.techelevator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -46,8 +49,19 @@ public class VendingMachineCLI {
 			System.out.println("Error: Can't find inventory file");
 			System.exit(1);
 		}
-		currentBalance = BigDecimal.TEN;
+		currentBalance = BigDecimal.ZERO;
 		currentBalance = currentBalance.setScale(2);
+		try (Logger log = new Logger("log.txt");){
+			
+			
+			log.Write(LocalDate.now() + " " + LocalTime.now() + "- Opening Log Session");
+		} 
+		catch (IOException ex) {
+			System.out.println("IO Exception at:" + ex.getMessage());
+		} 
+		catch (Exception ex) {
+			System.out.println("General Exception at:" + ex.getMessage());
+		}
 	}
 
 	public void run() {
@@ -61,6 +75,17 @@ public class VendingMachineCLI {
 				// do purchase
 				purchase();
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+				try (Logger log = new Logger("log.txt");){
+					
+					
+					log.Write(LocalDate.now() + " " + LocalTime.now() + "- Closing Session");
+				} 
+				catch (IOException ex) {
+					System.out.println("IO Exception at:" + ex.getMessage());
+				} 
+				catch (Exception ex) {
+					System.out.println("General Exception at:" + ex.getMessage());
+				}
 				System.out.println("Thank you for shopping!");
 				System.exit(1);
 			}
@@ -95,7 +120,7 @@ public class VendingMachineCLI {
 		inventory.close();
 	}
 
-	public void displayMenu() {
+	private void displayMenu() {
 		System.out.println(" _____________________________________________");
 		System.out.println("|---------------------------------------------|");
 		System.out.println("|       Umbrella Corp Vending Machine         |");
@@ -121,9 +146,10 @@ public class VendingMachineCLI {
 		System.out.println("|_____________________________________________|");
 	}
 
-	public void purchase() {
+	private void purchase() {
 		PurchaseMenu purchaseMenu = new PurchaseMenu(System.in, System.out);
-		while (true) { // PURCHASE MENU
+		boolean loop = true;
+		while (loop) { // PURCHASE MENU
 			String choice = (String) purchaseMenu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS, currentBalance);
 
 			if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
@@ -136,7 +162,8 @@ public class VendingMachineCLI {
 				}
 			} else if (choice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
 				// Finish transaction
-				System.exit(1);
+				finishTransaction();
+				loop = false;
 			}
 		}
 	}
@@ -146,23 +173,39 @@ public class VendingMachineCLI {
 		boolean loop = true;
 		while (loop) { // FEED MONEY MENU
 			String choice = (String) feedMoneyMenu.getChoiceFromOptions(FEED_MONEY_OPTIONS, currentBalance);
-			
+			BigDecimal add = BigDecimal.ZERO;
+			add = add.setScale(2);
 			if (choice.equals(FEED_MONEY_OPTION_ONE_DOLLAR)) {
-				currentBalance = currentBalance.add(BigDecimal.valueOf(1.00));
+				add = BigDecimal.valueOf(1.00);
+				currentBalance = currentBalance.add(add);
 			} else if (choice.equals(FEED_MONEY_OPTION_TWO_DOLLARS)) {
-				currentBalance = currentBalance.add(BigDecimal.valueOf(2.00));
+				add = BigDecimal.valueOf(2.00);
+				currentBalance = currentBalance.add(add);
 			} else if (choice.equals(FEED_MONEY_OPTION_FIVE_DOLLARS)) {
-				currentBalance = currentBalance.add(BigDecimal.valueOf(5.00));
+				add = BigDecimal.valueOf(5.00);
+				currentBalance = currentBalance.add(add);
 			} else if (choice.equals(FEED_MONEY_OPTION_TEN_DOLLARS)) {
-				currentBalance = currentBalance.add(BigDecimal.valueOf(10.00));
+				add = BigDecimal.valueOf(10.00);
+				currentBalance = currentBalance.add(add);
 			} else if (choice.equals(FEED_MONEY_OPTION_RETURN)) {
 				loop = false;
+				break;
+			}
+			
+			try (Logger log = new Logger("log.txt");){
+				log.Write(LocalDate.now() + " " + LocalTime.now() + " FEED MONEY:  $" + add + " $" + currentBalance);
+			} 
+			catch (IOException ex) {
+				System.out.println("IO Exception at:" + ex.getMessage());
+			} 
+			catch (Exception ex) {
+				System.out.println("General Exception at:" + ex.getMessage());
 			}
 
 		}
 	}
 	
-	public void selectProduct() {
+	private void selectProduct() {
 		displayMenu();
 		ProductMenu productMenu = new ProductMenu(System.in, System.out);
 		
@@ -180,18 +223,52 @@ public class VendingMachineCLI {
 				} else if (currentBalance.compareTo(itemList.get(i).getPrice()) < 0) {
 					System.out.println("Not enough balance.  Please feed me more money");
 				} else {
+					
+					try (Logger log = new Logger("log.txt");){
+						log.Write(LocalDate.now() + " " + LocalTime.now() + " " + itemList.get(i).getName() + " " + itemList.get(i).getSlot() + " $" + currentBalance + " $" +currentBalance.subtract(itemList.get(i).getPrice()));
+					} 
+					catch (IOException ex) {
+						System.out.println("IO Exception at:" + ex.getMessage());
+					} 
+					catch (Exception ex) {
+						System.out.println("General Exception at:" + ex.getMessage());
+					}
 					currentBalance = currentBalance.subtract(itemList.get(i).getPrice());
+					itemList.get(i).buy();					
 					
 					System.out.println("You have selected " + itemList.get(i).getName());
 					System.out.println("Item Price: $" + itemList.get(i).getPrice());
 					System.out.println("Balance remaining: $" + currentBalance);
 					System.out.println();
 					System.out.println(itemList.get(i).getSound());
-					
 				}
 			}
-			
 		}
 	}
-
+	
+	private void finishTransaction() {
+		try (Logger log = new Logger("log.txt");){			
+			log.Write(LocalDate.now() + " " + LocalTime.now() + " GIVE CHANGE: $" + currentBalance + " $0.00");
+		} 
+		catch (IOException ex) {
+			System.out.println("IO Exception at:" + ex.getMessage());
+		} 
+		catch (Exception ex) {
+			System.out.println("General Exception at:" + ex.getMessage());
+		}
+		System.out.print("Your change is " + currentBalance + ", given as: ");
+		
+		int quarters = currentBalance.divide(BigDecimal.valueOf(0.25)).intValue();
+		currentBalance = currentBalance.remainder(BigDecimal.valueOf(0.25));
+		
+		int dimes = currentBalance.divide(BigDecimal.valueOf(0.10)).intValue();
+		currentBalance = currentBalance.remainder(BigDecimal.valueOf(0.10));
+		
+		int nickels = currentBalance.divide(BigDecimal.valueOf(0.05)).intValue();
+		currentBalance = currentBalance.remainder(BigDecimal.valueOf(0.05));
+		
+		System.out.println(quarters + " quarters, " + dimes + " dimes, and " + nickels + " nickels.");
+//		System.out.println(currentBalance);
+	}
+	
 }
