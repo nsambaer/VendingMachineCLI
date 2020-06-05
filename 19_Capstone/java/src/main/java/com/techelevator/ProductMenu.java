@@ -33,8 +33,8 @@ public class ProductMenu extends Menu {
 		String userInput = super.in.nextLine();
 		try {
 			for (int i = 0; i < options.length; i++) {
-				if (options[i].equals(userInput)) {
-					choice = userInput;
+				if (options[i].equals(userInput.toUpperCase())) {
+					choice = options[i];
 					return choice;
 				}
 			}

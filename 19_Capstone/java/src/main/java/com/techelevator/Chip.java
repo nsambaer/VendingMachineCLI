@@ -14,6 +14,7 @@ public class Chip implements Vendable {
 	public Chip(String name, BigDecimal price, String slot) {
 		this.name = name;
 		this.price = price;
+		this.price = this.price.setScale(2);
 		this.slot = slot;
 		this.sound = "Crunch Crunch, yum!";
 		this.stock = 5;

@@ -54,7 +54,7 @@ public class VendingMachineCLI {
 		try (Logger log = new Logger("log.txt");){
 			
 			
-			log.Write(LocalDate.now() + " " + LocalTime.now() + "- Opening Log Session");
+			log.Write(LocalDate.now() + " " + LocalTime.now() + " Opening Log Session");
 		} 
 		catch (IOException ex) {
 			System.out.println("IO Exception at:" + ex.getMessage());
@@ -78,7 +78,7 @@ public class VendingMachineCLI {
 				try (Logger log = new Logger("log.txt");){
 					
 					
-					log.Write(LocalDate.now() + " " + LocalTime.now() + "- Closing Session");
+					log.Write(LocalDate.now() + " " + LocalTime.now() + " Closing Log Session\n");
 				} 
 				catch (IOException ex) {
 					System.out.println("IO Exception at:" + ex.getMessage());
@@ -176,16 +176,16 @@ public class VendingMachineCLI {
 			BigDecimal add = BigDecimal.ZERO;
 			add = add.setScale(2);
 			if (choice.equals(FEED_MONEY_OPTION_ONE_DOLLAR)) {
-				add = BigDecimal.valueOf(1.00);
+				add = add.add(BigDecimal.valueOf(1.00));
 				currentBalance = currentBalance.add(add);
 			} else if (choice.equals(FEED_MONEY_OPTION_TWO_DOLLARS)) {
-				add = BigDecimal.valueOf(2.00);
+				add = add.add(BigDecimal.valueOf(2.00));
 				currentBalance = currentBalance.add(add);
 			} else if (choice.equals(FEED_MONEY_OPTION_FIVE_DOLLARS)) {
-				add = BigDecimal.valueOf(5.00);
+				add = add.add(BigDecimal.valueOf(5.00));
 				currentBalance = currentBalance.add(add);
 			} else if (choice.equals(FEED_MONEY_OPTION_TEN_DOLLARS)) {
-				add = BigDecimal.valueOf(10.00);
+				add = add.add(BigDecimal.valueOf(10.00));
 				currentBalance = currentBalance.add(add);
 			} else if (choice.equals(FEED_MONEY_OPTION_RETURN)) {
 				loop = false;
@@ -193,7 +193,7 @@ public class VendingMachineCLI {
 			}
 			
 			try (Logger log = new Logger("log.txt");){
-				log.Write(LocalDate.now() + " " + LocalTime.now() + " FEED MONEY:  $" + add + " $" + currentBalance);
+				log.Write(LocalDate.now() + " " + LocalTime.now() + " FEED MONEY: $" + add + " $" + currentBalance);
 			} 
 			catch (IOException ex) {
 				System.out.println("IO Exception at:" + ex.getMessage());
@@ -270,5 +270,7 @@ public class VendingMachineCLI {
 		System.out.println(quarters + " quarters, " + dimes + " dimes, and " + nickels + " nickels.");
 //		System.out.println(currentBalance);
 	}
+	
+	
 	
 }

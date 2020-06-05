@@ -14,6 +14,7 @@ public class Candy implements Vendable {
 	public Candy(String name, BigDecimal price, String slot) {
 		this.name = name;
 		this.price = price;
+		this.price = this.price.setScale(2);
 		this.slot = slot;
 		this.sound = "Munch Munch, yum!";
 		this.stock = 5;
