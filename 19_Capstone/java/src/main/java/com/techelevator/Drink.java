@@ -10,6 +10,7 @@ public class Drink implements Vendable {
 	private String slot;
 	private int stock;
 	private boolean soldOut;
+	private int sales;
 	
 	public Drink(String name, BigDecimal price, String slot) {
 		this.name = name;
@@ -47,6 +48,10 @@ public class Drink implements Vendable {
 		return Integer.toString(stock);
 		} else return "SOLD OUT";
 	}
+	
+	public int getSales() {
+		return sales;
+	}
 
 	@Override
 	public void buy() {
@@ -54,6 +59,7 @@ public class Drink implements Vendable {
 		if (stock == 0) {
 			soldOut = true;
 		}
+		sales++;
 	}
 
 	public boolean isSoldOut() {

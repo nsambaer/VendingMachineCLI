@@ -17,8 +17,9 @@ public class VendingMachineCLI {
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
 	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
-	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE,
-			MAIN_MENU_OPTION_EXIT };
+	private static final String MAIN_MENU_OPTION_SALES = "";
+	private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE,
+			MAIN_MENU_OPTION_EXIT, MAIN_MENU_OPTION_SALES};
 
 	private static final String PURCHASE_MENU_OPTION_FEED_MONEY = "Feed money";
 	private static final String PURCHASE_MENU_OPTION_SELECT_PRODUCT = "Select Product";
@@ -69,6 +70,8 @@ public class VendingMachineCLI {
 				vmLogger(LocalDate.now() + " " + LocalTime.now() + " Closing Log Session\n");
 				System.out.println("Thank you for shopping!");
 				System.exit(1);
+			} else if (choice.equals(MAIN_MENU_OPTION_SALES)) {
+				salesLog();
 			}
 		}
 	}
@@ -125,10 +128,6 @@ public class VendingMachineCLI {
 			System.out.println("|  " + item.getSlot() + "  | " + nameWithSpacing + "| $" + item.getPrice() + " | Qty: " + stock + " |");				
 		}
 		
-//		for (Vendable item : itemList) {
-//			System.out.println("|   " + item.getSlot() + "   | " + item.getName() + "   |   $" + item.getPrice()
-//					+ "   |   Qty: " + item.getStock() + "  |");
-//		}
 		System.out.println("|---------------------------------------------------|");
 		System.out.println("|___________________________________________________|");
 	}
@@ -165,6 +164,29 @@ public class VendingMachineCLI {
 		catch (Exception ex) {
 			System.out.println("General Exception at:" + ex.getMessage());
 		}		
+	}
+	
+	private void salesLog() {
+		String fileName = LocalDate.now() + " " + LocalTime.now();
+		fileName = fileName.replaceAll(":", "_");
+		fileName = fileName.substring(0, 19);
+		String output = "";
+		BigDecimal totalSales = BigDecimal.ZERO;
+		try (Logger log = new Logger("SalesReport/" + fileName + " Sales Log.txt");){
+			for (Vendable item: itemList) {
+				output += item.getName() + "|" + item.getSales() + "\n";
+				totalSales = totalSales.add(item.getPrice().multiply(BigDecimal.valueOf((double) (item.getSales()))));
+				totalSales = totalSales.setScale(2);
+			}
+			output += "TOTAL SALES: $" + totalSales;
+			log.Write(output);
+		} 
+		catch (IOException ex) {
+			System.out.println("IO Exception at:" + ex.getMessage());
+		} 
+		catch (Exception ex) {
+			System.out.println("General Exception at:" + ex.getMessage());
+		}	
 	}
 	
 	private void feedMoney() {

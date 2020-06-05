@@ -11,4 +11,5 @@ public interface Vendable {
 	public String getStock();
 	public void buy();
 	public boolean isSoldOut();
+	public int getSales();
 }
