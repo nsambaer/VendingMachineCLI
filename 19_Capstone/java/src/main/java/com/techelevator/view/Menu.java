@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Menu {
 
 	protected PrintWriter out;
-	private Scanner in;
+	protected Scanner in;
 
 	public Menu(InputStream input, OutputStream output) {
 		this.out = new PrintWriter(output);

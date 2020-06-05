@@ -55,4 +55,8 @@ public class Drink implements Vendable {
 		}
 	}
 
+	public boolean isSoldOut() {
+		return soldOut;
+	}
+
 }

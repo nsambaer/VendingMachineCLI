@@ -8,8 +8,8 @@ public class VendingMachineCLITest {
 		Menu testMenu = new Menu(System.in, System.out);
 		VendingMachineCLI testList = new VendingMachineCLI(testMenu);
 		
-		testList.displayMenu();
-		
+//		testList.displayMenu();
+		testList.selectProduct();
 //		testList.testInventory();
 		
 	}

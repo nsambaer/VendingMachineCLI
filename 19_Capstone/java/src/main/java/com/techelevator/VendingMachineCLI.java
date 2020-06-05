@@ -46,7 +46,7 @@ public class VendingMachineCLI {
 			System.out.println("Error: Can't find inventory file");
 			System.exit(1);
 		}
-		currentBalance = BigDecimal.ZERO;
+		currentBalance = BigDecimal.TEN;
 		currentBalance = currentBalance.setScale(2);
 	}
 
@@ -104,6 +104,15 @@ public class VendingMachineCLI {
 		System.out.println("|---------------------------------------------|");
 		System.out.println("|  Slot  |  Name  |  Price  |  # Available    |");
 		System.out.println("|---------------------------------------------|");
+	
+//		for (Vendable item : itemList) {
+//			String nameWithSpacing = item.getName();
+//			for (int i = 0; i <= (20 - nameWithSpacing.length()); i++) {
+//				nameWithSpacing += " ";
+//			}
+//			System.out.println("|   " + item.getSlot() + "   | " + nameWithSpacing + "|"); // + item.getPrice() + "   |   Qty: " + item.getStock() + "  |");
+//		}
+		
 		for (Vendable item : itemList) {
 			System.out.println("|   " + item.getSlot() + "   | " + item.getName() + "   |   $" + item.getPrice()
 					+ "   |   Qty: " + item.getStock() + "  |");
@@ -120,7 +129,11 @@ public class VendingMachineCLI {
 			if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
 				feedMoney();
 			} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
-
+				if (currentBalance.compareTo(BigDecimal.ZERO) < 1) {
+					System.out.println("\n$$$ Please feed money into machine first $$$");
+				} else {
+					selectProduct();
+				}
 			} else if (choice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
 				// Finish transaction
 				System.exit(1);
@@ -129,7 +142,7 @@ public class VendingMachineCLI {
 	}
 
 	private void feedMoney() {
-		FeedMoneyMenu feedMoneyMenu = new FeedMoneyMenu(System.in, System.out, currentBalance);
+		FeedMoneyMenu feedMoneyMenu = new FeedMoneyMenu(System.in, System.out);
 		boolean loop = true;
 		while (loop) { // FEED MONEY MENU
 			String choice = (String) feedMoneyMenu.getChoiceFromOptions(FEED_MONEY_OPTIONS, currentBalance);
@@ -146,6 +159,38 @@ public class VendingMachineCLI {
 				loop = false;
 			}
 
+		}
+	}
+	
+	public void selectProduct() {
+		displayMenu();
+		ProductMenu productMenu = new ProductMenu(System.in, System.out);
+		
+		String[] productOptions = new String[itemList.size()];
+		for (int i = 0; i < itemList.size(); i++) {
+			productOptions[i] = itemList.get(i).getSlot();
+		}
+		
+		String choice = (String) productMenu.getChoiceFromOptions(productOptions, currentBalance);
+		
+		for (int i = 0; i < itemList.size(); i++) {
+			if (choice.equals(itemList.get(i).getSlot())) {
+				if (itemList.get(i).isSoldOut()) {
+					System.out.println("Product is sold out.  Please make another selection.");
+				} else if (currentBalance.compareTo(itemList.get(i).getPrice()) < 0) {
+					System.out.println("Not enough balance.  Please feed me more money");
+				} else {
+					currentBalance = currentBalance.subtract(itemList.get(i).getPrice());
+					
+					System.out.println("You have selected " + itemList.get(i).getName());
+					System.out.println("Item Price: $" + itemList.get(i).getPrice());
+					System.out.println("Balance remaining: $" + currentBalance);
+					System.out.println();
+					System.out.println(itemList.get(i).getSound());
+					
+				}
+			}
+			
 		}
 	}
 

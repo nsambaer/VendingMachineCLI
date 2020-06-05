@@ -55,4 +55,8 @@ public class Candy implements Vendable {
 		}
 	}
 
+	public boolean isSoldOut() {
+		return soldOut;
+	}
+
 }

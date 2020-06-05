@@ -55,4 +55,8 @@ public class Gum implements Vendable {
 		}
 	}
 
+	public boolean isSoldOut() {
+		return soldOut;
+	}
+
 }

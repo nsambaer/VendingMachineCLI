@@ -9,7 +9,7 @@ import com.techelevator.view.Menu;
 public class FeedMoneyMenu extends Menu {
 
 
-	public FeedMoneyMenu(InputStream input, OutputStream output, BigDecimal currentBalance) {
+	public FeedMoneyMenu(InputStream input, OutputStream output) {
 		super(input, output);
 	}
 	

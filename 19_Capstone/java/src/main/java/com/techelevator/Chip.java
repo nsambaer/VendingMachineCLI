@@ -55,4 +55,8 @@ public class Chip implements Vendable {
 		}
 	}
 
+	public boolean isSoldOut() {
+		return soldOut;
+	}
+
 }

@@ -10,4 +10,5 @@ public interface Vendable {
 	public String getSlot();
 	public String getStock();
 	public void buy();
+	public boolean isSoldOut();
 }
